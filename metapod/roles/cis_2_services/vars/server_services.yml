@@ -1,0 +1,18 @@
+cis_2_1_services_to_disable:
+  - autofs
+  - avahi-daemon
+  - dhcpd
+  - named
+  - dnsmasq
+  - smb
+  - ftp
+  - dovecot
+  - nfs-server
+  - nis
+  - cups
+  - rpcbind
+  - rsync
+  - snmpd
+  - telnet
+  - tftp
+  - squid

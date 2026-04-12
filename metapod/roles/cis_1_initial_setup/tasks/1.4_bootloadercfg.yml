@@ -1,0 +1,73 @@
+# Note you will have to generate a GRUB password with
+# grub2-mkpasswd-pbkdf2
+# Also note that the GRUB path can vary
+# BIOS: /boot/grub2/grub.cfg
+# UEFI: /boot/efi/EFI/redhat/grub.cfg
+- name: "CIS 1.4 - Configure Bootloader (BIOS)"
+  when: ansible_facts['firmware'] != "efi"
+  tags:
+    - cis_1.4
+  block:
+
+    # 1.4.1 - Bootloader password
+    - name: "Ensure GRUB password is set"
+      ansible.builtin.copy:
+        dest: /etc/grub.d/40_custom
+        content: |
+          set superusers="root"
+          password_pbkdf2 root {{ grub_password_hash }}
+        owner: root
+        group: root
+        mode: '0600'
+      when: grub_password_hash is defined
+      tags:
+        - cis_1.4.1
+        - level1
+
+    - name: "Rebuild grub configuration"
+      ansible.builtin.command: grub2-mkconfig -o /boot/grub2/grub.cfg
+      changed_when: false
+      when: grub_password_hash is defined
+      tags:
+      - cis_1.4.1
+        
+    # 1.4.2 - Permissions on bootloader config
+    - name: "Ensure permissions on grub.cfg are secure"
+      ansible.builtin.file:
+        path: /boot/grub2/grub.cfg
+        owner: root
+        group: root
+        mode: '0600'
+      tags:
+        - cis_1.4.2
+        - level1
+
+# UEFI Systems
+- name: "CIS 1.4 - Configure Bootloader (UEFI)"
+  when: ansible_facts['firmware'] == "efi"
+  tags:
+    - cis_1.4
+  block:
+
+    - name: "Ensure GRUB password is set (UEFI)"
+      ansible.builtin.copy:
+        dest: /etc/grub.d/40_custom
+        content: |
+          set superusers="root"
+          password_pbkdf2 root {{ grub_password_hash }}
+        owner: root
+        group: root
+        mode: '0600'
+      when: grub_password_hash is defined
+
+    - name: "Rebuild GRUB configuration (UEFI)"
+      ansible.builtin.command: grub2-mkconfig -o /boot/efi/EFI/redhat/grub.cfg
+      changed_when: false
+      when: grub_password_hash is defined
+
+    - name: "Ensure permissions on grub.cfg (UEFI)"
+      ansible.builtin.file:
+        path: /boot/efi/EFI/redhat/grub.cfg
+        owner: root
+        group: root
+        mode: '0600'

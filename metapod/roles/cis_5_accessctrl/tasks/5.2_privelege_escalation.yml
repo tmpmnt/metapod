@@ -1,0 +1,57 @@
+- name: "CIS 5.2.1 - Ensure sudo is installed"
+  ansible.builtin.dnf:
+    name: sudo
+    state: present
+  tags:
+    - cis_5.2.1
+
+- name: "CIS 5.2.2 - Ensure sudo uses pty"
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/cis
+    regexp: '^Defaults\s+use_pty'
+    line: 'Defaults use_pty'
+    validate: '/usr/sbin/visudo -cf %s'
+  tags:
+    - cis_5.2.2
+
+- name: "CIS 5.2.3 - Ensure sudo log file is configured"
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/cis
+    regexp: '^Defaults\s+logfile='
+    line: 'Defaults logfile="/var/log/sudo.log"'
+    validate: '/usr/sbin/visudo -cf %s'
+  tags:
+    - cis_5.2.3
+
+- name: "CIS 5.2.4 - Ensure sudo requires password"
+  ansible.builtin.replace:
+    path: /etc/sudoers.d/cis
+    regexp: 'NOPASSWD'
+    replace: ''
+    validate: '/usr/sbin/visudo -cf %s'
+  tags:
+    - cis_5.2.4
+
+- name: "CIS 5.2.5 - Ensure re-authentication is required"
+  ansible.builtin.replace:
+    path: /etc/sudoers.d/cis
+    regexp: '!authenticate'
+    replace: ''
+    validate: '/usr/sbin/visudo -cf %s'
+
+- name: "CIS 5.2.6 - Ensure sudo timeout is configured"
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/cis
+    regexp: '^Defaults\s+timestamp_timeout='
+    line: 'Default timestamp_timeout=15'
+    validate: '/usr/sbin/visudo -cf %s'
+  tags:
+    - cis_5.2.6
+
+- name: "CIS 5.2.7 - Restrict su to wheel group"
+  ansible.builtin.lineinfile:
+    path: /etc/pam.d/su
+    regexp: '^auth\s+required\s+pam_wheel.so'
+    line: 'auth required pam_wheel.so use_uid group=wheel'
+  tags:
+    - cis_5.2.7

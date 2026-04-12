@@ -1,0 +1,81 @@
+---
+- name: "Ensure the audit log directory mode is configured"
+  ansible.builtin.file:
+    path: /var/log/audit
+    mode: '0700'
+    owner: root
+    group: root
+  tags:
+    - cis_6.3.4.1
+
+- name: "Ensure the audit log files mode is configured"
+  ansible.builtin.file:
+    path: /var/log/audit/*
+    mode: '0600'
+    owner: root
+    group: root
+  tags:
+    - cis_6.3.4.2
+
+- name: "Ensure the audit log files owner is configured"
+  ansible.builtin.file:
+    path: /var/log/audit/*
+    owner: root
+    group: root
+  tags:
+    - cis_6.3.4.3
+
+- name: "Ensure the audit log files group owner is configured"
+  ansible.builtin.file:
+    path: /var/log/audit/*
+    group: root
+  tags:
+    - cis_6.3.4.4
+
+- name: "Ensure the audit configuration files mode is configured"
+  ansible.builtin.file:
+    path: /etc/audit/audit.rules
+    mode: '0600'
+    owner: root
+    group: root
+  tags:
+    - cis_6.3.4.5
+
+- name: "Ensure the audit configuration files owner is configured"
+  ansible.builtin.file:
+    path: /etc/audit/audit.rules
+    owner: root
+    group: root
+  tags:
+    - cis_6.3.4.6
+
+- name: "Ensure the audit configuration files group owner is configured"
+  ansible.builtin.file:
+    path: /etc/audit/audit.rules
+    group: root
+  tags:
+    - cis_6.3.4.7
+
+- name: "Ensure the audit tools mode is configured"
+  ansible.builtin.file:
+    path: /sbin/ausearch
+    mode: '0700'
+    owner: root
+    group: root
+  tags:
+    - cis_6.3.4.8
+
+- name: "Ensure the audit tools owner is configured"
+  ansible.builtin.file:
+    path: /sbin/ausearch
+    owner: root
+    group: root
+  tags:
+    - cis_6.3.4.9
+
+- name: "Ensure the audit tools group owner is configured"
+  ansible.builtin.file:
+    path: /sbin/ausearch
+    group: root
+  tags:
+    - cis_6.3.4.10

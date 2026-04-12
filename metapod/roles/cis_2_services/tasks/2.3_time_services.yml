@@ -1,0 +1,37 @@
+- name: "CIS 2.3.1 Ensure time synchronization is in use"
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+  loop:
+    - chronyd
+    - ntpd
+  register: time_services
+  changed_when: false
+  tags:
+    - cis_2.3.1
+    - automated
+
+- name: "CIS 2.3.2 - Configure chrony"
+  ansible.builtin.lineinfile:
+    path: /etc/chrony.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+  loop:
+    - { regexp: '^server', line: 'server time.example.com iburst' }
+    - { regexp: '^makestep', line: 'makestep 1.0.3' }
+    - { regexp: '^allow', line: 'allow 127.0.0.1'}
+  notify: Restart chronyd
+  tags:
+    - cis_2.3.2
+    - automated
+
+- name: "CIS 2.3.3 - Ensure chrony is not run as root"
+  ansible.builtin.command: "ps -eo user,comm | grep chronyd"
+  register: chrony_user
+  changed_when: false
+  failed_when: "'root' in chrony_user.stdout"
+  tags:
+    - cis_2.3.3
+    - automated

@@ -1,0 +1,40 @@
+- name: "CIS 1.1.2 - Configure filesystem partitions"
+  tags:
+    - cis_1.1.2
+    - level1
+  block:
+
+    - name: "check if mount points exist"
+      command: "findmnt -n {{ item.name }}"
+      register: mount_check
+      failed_when: false
+      changed_when: false
+      loop: "{{ cis_1_1_2_mounts }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+    - name: "warn if separate partition is missing"
+      debug: 
+        msg: "WARNING: {{ item.item.name }} is not a separate mount point"
+      when: 
+        - item.rc != 0
+        - item.item.separate_partition | default(false)
+      loop: "{{ mount_check.results }}"
+
+    - name: "ensure mount options are set in fstab"
+      ansible.builtin.mount:
+        path: "{{ item.name }}"
+        opts: "{{ item.options | join(',') }}"
+        state: mounted
+      when:
+        - item.name in ansible_mounts | map(attribute='mount') | list
+      loop: "{{ cis_1_1_2_mounts }}"
+      loop_control:
+        label: "{{ item.name }}"
+
+- name: "Report current mount options"
+  ansible.builtin.debug:
+    msg: "{{ item.mount }} mounted with {{ item.options }}"
+  loop: "{{ ansible_mounts }}"
+  tags:
+    - audit

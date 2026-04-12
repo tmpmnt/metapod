@@ -1,0 +1,94 @@
+---
+- name: "CIS Firewall Configuration using nftables"
+  hosts: all
+  become: true
+  tasks:
+
+    - name: "Ensure nftables is installed"
+      ansible.builtin.dnf:
+        name: nftables
+        state: present
+      tags:
+        - cis_4.1.1
+        - level1
+
+    - name: "Ensure firewalld is stopped and disabled"
+      ansible.builtin.systemd:
+        name: firewalld
+        state: stopped
+        enabled: no
+      tags:
+        - cis_4.1.2
+        - level1
+
+    - name: "Ensure nftables base chains exist"
+      ansible.builtin.nft:
+        table: inet
+        chain:
+          - name: input
+            type: filter
+            policy: drop
+          - name: output
+            type: filter
+            policy: accept
+          - name: forward
+            type: filter
+            policy: drop
+      tags:
+        - cis_4.3.1
+        - level1
+
+    - name: "Ensure nftables default deny policy is configured"
+      ansible.builtin.nft:
+        table: inet
+        chain:
+          name: input
+          policy: drop
+        tags:
+          - cis_4.3.3
+          - level1
+
+    - name: "Ensure nftables loopback traffic is allowed"
+      ansible.builtin.nft:
+        table: inet
+        chain: input
+        rule:
+          protocol: ip
+          iifname: lo
+          accept: true
+      tags:
+        - cis_4.3.4
+        - level1
+
+    - name: "Ensure established connections are accepted"
+      ansible.builtin.nft:
+        table: inet
+        chain: input
+        rule:
+          ctstate: established, related
+          accept: true
+      tags:
+        - cis_4.3.2
+        - manual
+
+    - name: "Allow loopback traffic"
+      ansible.builtin.nft:
+        table: inet
+        chain: input
+        rule:
+          iifname: lo
+          accept: true
+      tags:
+        - cis_4.3.4
+        - level1
+
+#   - name: "Allow SSH traffic"
+#     ansible.builtin.nft:
+#       table: inet
+#       chain: input
+#       rule:
+#         tcp dport 22
+#         accept: true
+#     tags:
+#       - cis_4.3.x
+#       - level1
