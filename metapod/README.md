@@ -18,4 +18,4 @@ This project is a set of Ansible playbooks that implement the CIS Benchmarks for
 1. Clone this repository to your local machine:
 
    ```bash
-   git clone https://github.com/yourusername/project-repo.git
+   git clone https://github.com/tmpmount/metapod.git
