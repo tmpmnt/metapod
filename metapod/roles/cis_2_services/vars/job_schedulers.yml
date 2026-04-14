@@ -1,7 +1,0 @@
-cis_cron_files:
-  - path: /etc/crontab
-  - path: /etc/cron.hourly
-  - path: /etc/cron.daily
-  - path: /etc/cron.weekly
-  - path: /etc/cron.monthly
-  - path: /etc/cron.d
