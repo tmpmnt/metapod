@@ -1,7 +1,0 @@
----
-- name: "CIS 7.1 - System File Permissions"
-  import_tasks: tasks/7.1_system_file_perm.yml
-
-- name: "CIS 7.2 - Local User and Group Settings"
-  import_tasks: tasks/7.2_usrgrp_settings.yml
-
