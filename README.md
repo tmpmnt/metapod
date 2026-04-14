@@ -1,4 +1,4 @@
-# Linux Hardening Framework (Ansible)
+# Metapod
 
 A modular, extensible Ansible-based framework for hardening Linux systems using industry benchmarks and best practices.
 
