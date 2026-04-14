@@ -1,0 +1,24 @@
+---
+- name: "CIS 6.1 - Configure Integrity Checking"
+  import_tasks: 6.1_integritychk.yml
+
+- name: "CIS 6.2 - System Logging"
+  import_tasks: tasks/6.2_system_logging.yml
+
+- name: "CIS 6.2.2 - Configure journald"
+  import_tasks: tasks/6.2.2_journald.yml
+
+- name: "CIS 6.2.3 - Configure rsyslog"
+  import_tasks: tasks/6.2.3_rsyslog.yml
+
+- name: "CIS 6.3.1 Configure auditd"
+  import_tasks: tasks/6.3.1_auditing.yml
+
+- name: "CIS 6.3.2 - Configure Data Retention"
+  import_tasks: tasks/6.3.2_retention.yml
+
+- name: "CIS 6.3.3 - Configure auditd Rules"
+  import_tasks: tasks/6.3.3_audit.yml
+
+- name: "CIS 6.3.4 - Configure auditd File Access"
+  import_tasks: tasks/6.3.4_auditd_file_access.yml

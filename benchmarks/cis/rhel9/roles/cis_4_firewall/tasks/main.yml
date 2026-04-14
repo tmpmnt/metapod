@@ -1,0 +1,3 @@
+---
+- name: "CIS 4.1 - Configure Firewall Utility"
+  import_tasks: tasks/4_firewall.yml

@@ -1,0 +1,116 @@
+- name: "Ensure permissions on /etc/passwd are configured"
+  ansible.builtin.file:
+    path: /etc/passwd
+    mode: '0644'
+    owner: root
+    group: root
+  tags:
+    - cis_7.1.1
+
+- name: "Ensure permissions on /etc/passwd- are configured"
+  ansible.builtin.file:
+    path: /etc/passwd-
+    mode: '0644'
+    owner: root
+    group: root
+  tags:
+    - cis_7.1.2
+
+- name: "Ensure permissions on /etc/group are configured"
+  ansible.builtin.file:
+    path: /etc/group
+    mode: '0644'
+    owner: root
+    group: root
+  tags:
+    - cis_7.1.3
+
+- name: "Ensure permissions on /etc/group- are configured"
+  ansible.builtin.file:
+    path: /etc/group-
+    mode: '0000'
+    owner: root
+    group: shadow
+  tags:
+    - cis_7.1.4
+
+- name: "Ensure permissions on /etc/shadow are configured"
+  ansible.builtin.file:
+    path: /etc/shadow
+    mode: '0000'
+    owner: root
+    group: shadow
+  tags:
+    - cis_7.1.5
+
+- name: "Ensure permissions on /etc/shadow- are configured"
+  ansible.builtin.file:
+    path: /etc/shadow-
+    mode: '0000'
+    owner: root
+    group: shadow
+  tags:
+    - cis_7.1.6
+
+- name: "Ensure permissions on /etc/gshadow are configured"
+  ansible.builtin.file:
+    path: /etc/gshadow
+    mode: '0000'
+    owner: root
+    group: shadow
+  tags:
+    - cis_7.1.7
+
+- name: "Ensure permissions on /etc/gshadow- are configured"
+  ansible.builtin.file:
+    path: /etc/gshadow-
+    mode: '0000'
+    owner: root
+    group: shadow
+  tags:
+    - cis_7.1.8
+
+- name: "Ensure permissions on /etc/shells are configured"
+  ansible.builtin.file:
+    path: /etc/shells
+    mode: '0644'
+    owner: root
+    group: root
+  tags:
+    - cis_7.1.9
+
+- name: "Ensure permissions on /etc/security/opasswd are configured"
+  ansible.builtin.file:
+    path: /etc/security/opasswd
+    mode: '0600'
+    owner: root
+    group: root
+  tags:
+    - cis_7.1.9
+
+- name: "Ensure world writable files and directories are secured"
+  ansible.builtin.find:
+    path: /
+    recurse: yes
+    mode: "0022"
+  register: world_writable.matched
+  failed_when: world_writable.matched > 0
+  tags:
+    - cis_7.1.11
+
+- name: "Ensure no files or directories without an owner and a group exist"
+  ansible.builtin.find:
+    path: /
+    recurse: yes
+    ignore_missing_files: yes
+    skip_file: yes
+    owner: ""
+    group: ""
+  register: orphaned_files
+  failed_when: orphaned_files.matched > 0
+  tags:
+    - cis_7.1.12
+
+# 7.1.13 Ensure SUID and SGID files are reviewed (Manual)
+# To check for SUID and SGID files we can run the following command
+# find / -type f \( -perm -4000 -o -perm -2000 \) -exec ls -l {} \;

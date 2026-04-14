@@ -1,0 +1,12 @@
+- name: Apply CIS RHEL9 Benchmark
+  hosts: all
+  become: true
+
+  roles:
+    - cis_1_initial_setup
+    - cis_2_services
+    - cis_3_network
+    - cis_4_firewall
+    - cis_5_accessctrl
+    - cis_6_logging_auditing
+    - cis_7_system_maintenance

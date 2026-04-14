@@ -1,0 +1,12 @@
+---
+- name: "CIS 2.1 - Server Services"
+  import_tasks: tasks/2.1_server_services.yml
+
+- name: "CIS 2.2 - Client Services"
+  import_tasks: tasks/2.2_client_services.yml
+
+- name: "CIS 2.3 Time Services"
+  import_tasks: tasks/2.3_time_services.yml
+
+- name: "CIS 2.4 - Job Schedulers"
+  import_tasks: tasks/2.4_job_schedulers

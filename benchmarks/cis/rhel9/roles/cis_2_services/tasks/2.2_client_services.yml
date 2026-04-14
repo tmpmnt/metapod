@@ -1,0 +1,11 @@
+- name: "CIS 2.2.x - Disable unneeded client services"
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  loop: "{{ cis_2_2_disabled_client_services }}"
+  loop_control:
+    label: "{{ item }}"
+  tags:
+    - cis_2_2
+    - level1 

@@ -1,0 +1,19 @@
+cis_1_1_2_mounts:
+  - name: /tmp
+    options: [nodev, nosuid, noexec]
+    separate_partition: true
+  - name: /dev/shm
+    options: [nodev, nosuid, noexec]
+    separate_partition: true
+  - name: /home
+    options: [nodev, nosuid]
+    separate_partition: true
+  - name: /var
+    options: [nodev, nosuid]
+    separate_partition: true
+  - name: /var/tmp
+    options: [nodev, nosuid, noexec]
+    separate_partition: true
+  - name: /var/log
+    options: [nodev, nosuid, noexec]
+    separate_partition: true

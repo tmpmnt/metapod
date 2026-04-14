@@ -1,0 +1,59 @@
+- name: "CIS 2.4.1.1 - Ensure cron daemon is enabled and active"
+  ansible.builtin.systemd:
+    name: crond
+    state: started
+    enabled: yes
+  tags:
+    - cis_2.4.1.1
+    - level1
+
+- name: "CIS 2.4.1.2-2.4.1.7 - Ensure cron permissions are configured"
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    owner: root
+    group: root
+    mode: '0700'
+  loop: "{{ cis_cron_files }}"
+  loop_control:
+    label: "{{ item.path }}"
+  tags:
+    - cis_2.4.1_permissions
+    - level1
+
+- name: "Ensure /etc/crontab permissions"
+  ansible.builtin.file:
+    path: /etc/cron.allow
+    state: touch
+    owner: root
+    group: root
+    mode: '0600'
+  tags:
+    - cis_2.4.1.8
+    - level1
+
+- name: "Remove cron.deny"
+  ansible.builtin.file:
+    path: /etc/cron.deny
+    state: absent
+  tags:
+    - cis_2.4.1.8
+    - level1
+
+- name: "Ensure at is restricted to authorized users"
+  ansible.builtin.file:
+    path: /etc/at.allow
+    state: touch
+    owner: root
+    group: root
+    mode: '0600'
+  tags:
+    - cis_2.4.2.1
+    - level1
+
+- name: "Remove at.deny"
+  ansible.builtin.file:
+    path: /etc/at.deny
+    state: absent
+  tags:
+    - cis_2.4.2.1
+    - level1
