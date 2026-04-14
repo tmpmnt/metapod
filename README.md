@@ -191,7 +191,7 @@ Contributions are welcome:
 
 ## License
 
-MIT License (or choose your preferred license)
+
 
 ---
 
