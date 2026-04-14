@@ -8,7 +8,7 @@ This project began as a CIS RHEL 9 implementation and has evolved into a flexibl
 
 ## Current Status
 
-WARNING: This project is currently a work-in-progress and has not been thoroughly reviewed. It is NOT RECOMMENDED FOR USE IN PRODUCTION ENVIRONMENTS at this time. The playbooks are subject to change, and further testing and validation are required.
+**WARNING:** This project is currently a work-in-progress and has not been thoroughly reviewed. It is **NOT RECOMMENDED FOR USE IN PRODUCTION ENVIRONMENTS** at this time. The playbooks are subject to change, and further testing and validation are required.
 
 ---
 
