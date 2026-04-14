@@ -1,0 +1,78 @@
+- name: "CIS 7.2.1 - Ensure accounts use shadowed passwords"
+  ansible.builtin.command: awk -F: '($2 != "x") { print $1 }' /etc/passwd
+  register: passwd_shadow_check
+  changed_when: false
+  failed_when: passwd_shadow_check.stdout != ""
+  tags:
+    - cis_7.2.1
+
+- name: "CIS 7.2.2 - Ensure no empty passwords"
+  ansible.builtin.command: awk -F: '($2 == "") { print $1 }' /etc/shadow
+  register: empty_passwords
+  changed_when: false
+  failed_when: empty_passwords.stdout != ""
+  tags:
+    - cis_7.2.2
+
+- name: "CIS 7.2.3 - Ensure all groups in passwd exist in group"
+  ansible.builtin.shell: |
+    for gid in $(cut -d: -f4 /etc/passwd); do
+      getent group $gid >/dev/null || echo "Missing group: $gid"
+    done
+  register: missing_groups
+  changed_when: false
+  failed_when: missing_groups.stdout != ""
+  tags:
+    - cis_7.2.3
+
+- name: "CIS 7.2.4 - Ensure no duplicate UIDs"
+  ansible.builtin.command: cut -d: -f3 /etc/passwd | sort | uniq -d
+  register: dup_uids
+  changed_when: false
+  failed_when: dup_uids.stdout != ""
+  tags:
+    - cis_7.2.4
+
+- name: "CIS 7.2.5 - Ensure no duplicate GIDs"
+  ansible.builtin.command: cut -d: -f3 /etc/group | sort | uniq -d
+  register: dup_gids
+  changed_when: false
+  failed_when: dup_gids.stdout != ""
+  tags:
+    - cis_7.2.5
+
+- name: "CIS 7.2.6 - Ensure no duplicate usernames"
+  ansible.builtin.command: cut -d: -f1 /etc/passwd | sort | uniq -d
+  register: dup_users
+  changed_when: false
+  failed_when: dup_users.stdout != ""
+  tags:
+    - cis_7.2.6
+
+- name: "CIS 7.2.7 - Ensure no duplicate group names"
+  ansible.builtin.command: cut -d: -f1 /etc/group | sort | uniq -d
+  register: dup_group_names
+  changed_when: false
+  failed_when: dup_group_names.stdout != ""
+  tags:
+    - cis_7.2.7
+
+- name: "CIS 7.2.8 - Ensure home directories exist"
+  ansible.builtin.shell: |
+    awk -F: '($7 !~ /(nologin|false)/) { print $1":"$6 }' /etc/passwd | while IFS=: read user dir; do
+      [ -d "$dir" ] || echo "$user missing home"
+    done
+  register: missing_homes
+  changed_when: false
+  failed_when: missing_homes.stdout != ""
+  tags:
+    - cis_7.2.8
+
+- name: "CIS 7.2.9 - Ensure dot files are secure"
+  ansible.builtin.shell: |
+    find /home -type f -name ".*" -perm /o+w
+  register: insecure_dotfiles
+  changed_when: false
+  failed_when: insecure_dotfiles.stdout != ""
+  tags:
+    - cis_7.2.9

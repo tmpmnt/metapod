@@ -1,0 +1,52 @@
+- name: "CIS 1.5 - Configure Additional Process Hardening"
+  tags:
+    - cis_1.5
+  block:
+
+    # 1.5.1 - ASLR
+    - name: "Ensure ASLR is enabled"
+      ansible.builtin.sysctl:
+        name: kernel.randomize_va_space
+        value: '2'
+        state: present
+        reload: yes
+        sysctl_file: /etc/sysctl.conf
+      tags:
+        - cis_1.5.1
+        - level1
+
+    # 1.5.2 - ptrace_storage
+    - name: "Ensure ptrace_scope is restricted"
+      ansible.builtin.sysctl:
+        name: kernel.yama.ptrace_scope
+        value: '1'
+        state: present
+        reload: yes
+        sysctl_file: /etc/sysctl.conf
+      tags:
+        - cis_1.5.2
+        - level1
+
+    - name: "Disable core dump backtrace"
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/coredump.conf
+        regexp: '^ProcessSizeMax='
+        line: 'ProcessSizeMax=0'
+        create: yes
+      notify: Restart systemd-coredump
+
+    - name: "Disable core dump storage"
+      ansible.builtin.lineinfile:
+        path: /etc/systemd/coredump.conf
+        regexp: '^Storage='
+        line: 'Storage=none'
+        create: yes
+      notify: Restart systemd-coredump      
+
+    - name: "Disable core dumps via limits.conf"
+      ansible.builtin.lineinfile:
+        path: /etc/security/limits.conf
+        line: '* hard core 0'
+        create: yes
+      tags:
+        - cis_1.5_extra

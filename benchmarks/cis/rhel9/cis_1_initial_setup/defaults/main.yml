@@ -1,0 +1,5 @@
+cis_warning_banner: |
+  Authorized uses only. All activity may be monitored and reported.
+  Unauthorized access is prohibited and subject to disciplinary action.
+
+cis_remove_gdm: true
