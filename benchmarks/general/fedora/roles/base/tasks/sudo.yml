@@ -1,0 +1,6 @@
+---
+- name: add admin to sudoers
+  copy:
+    dest: /etc/sudoers.d/admin
+    content: 'admin ALL=(ALL) ALL'
+    mode: '0440'

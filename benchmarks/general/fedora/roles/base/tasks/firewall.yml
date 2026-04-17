@@ -1,0 +1,53 @@
+- name: Ensure firewalld is running and enabled
+  service:
+    name: firewalld
+    state: started
+    enabled: true
+
+- name: Allow SSH
+  ansible.posix.firewalld:
+    service: ssh
+    permanent: true
+    state: enabled
+    immediate: true
+
+#- name: Allow HTTP
+#  ansible.posix.firewalld:
+#    service: httpd
+#    permanent: true
+#    state: enabled
+#    immediate: true
+
+#- name: Allow HTTPS
+#  ansible.posix.firewalld:
+#    service: https
+#    permanent: true
+#    state: enabled
+#    immediate: true
+
+#- name: Allow SMTP
+#  ansible.posix.firewalld:
+#    service: smtp
+#    permanent: true
+#    state: enabled
+#    immediate: true
+
+#- name: Allow Submission
+#  ansible.posix.firewalld:
+#    service: submission
+#    permanent: true
+#    state: enabled
+#    immediate: true
+
+#- name: Allow IMAPS
+#  ansible.posix.firewalld:
+#    service: imaps
+#    permanent: true
+#    state: enabled
+#    immediate: true
+
+- name: Set default zone to drop
+  command: firewall-cmd --set-default-zone=drop
+
+- name: Persist firewall rues
+  command: firewall-cmd --runtime-to-permanent

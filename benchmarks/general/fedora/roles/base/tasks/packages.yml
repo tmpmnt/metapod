@@ -1,0 +1,14 @@
+---
+- name: Update installed packages
+  dnf 
+    name: '*'
+    state: latest
+
+- name: Install fail2ban
+  dnf:
+    name:
+      - fail2ban
+      - google-authenticator
+      - firewalld
+      - chrony 
+    state: present

@@ -1,0 +1,6 @@
+---
+- name: Enable Google Authenticator
+  lineinfile:
+    path: /etc/pam.d/sshd
+    line: 'auth required pam_google_authenticator.so nullok'
+    state: present
