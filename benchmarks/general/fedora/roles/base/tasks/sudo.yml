@@ -1,6 +1,7 @@
----
-- name: add admin to sudoers
-  copy:
-    dest: /etc/sudoers.d/admin
-    content: 'admin ALL=(ALL) ALL'
-    mode: '0440'
+# Commented as this would have to be configured before running playbooks anyways.
+# ---
+# - name: add admin to sudoers
+#   copy:
+#     dest: /etc/sudoers.d/admin
+#     content: 'admin ALL=(ALL) ALL'
+#     mode: '0440'
