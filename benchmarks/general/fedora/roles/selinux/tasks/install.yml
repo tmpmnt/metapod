@@ -1,9 +1,0 @@
----
-- name: Ensure SELinux tools are installed
-  dnf:
-    name:
-      - policycoreutils
-      - policycoreutils-python-utils
-      - selinux-policy
-      - selinux-policy-targeted
-    state: present
