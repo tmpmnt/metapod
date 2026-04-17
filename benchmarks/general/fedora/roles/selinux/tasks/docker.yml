@@ -1,16 +1,4 @@
 ---
-- name: Allow container access to host volumes
-  seboolean:
-    name: container_manage_cgroup
-    state: true
-    persistent: true
-
-- name: Allow container network access
-  seboolean:
-    name: container_use_network
-    state: true
-    persistent: true
-
 - name: Set SELinux context for mailcow data
   command: >
     semanage fcontext -a -t container_file_t "/opt/mailcow-dockerized(/.*)?"
