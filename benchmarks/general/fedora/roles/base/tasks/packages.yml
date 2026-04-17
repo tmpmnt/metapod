@@ -14,4 +14,7 @@
       - policycoreutils-python-utils
       - python3-libselinux
       - python3-libsemanage
+      - policycoreutils
+      - selinux-policy
+      - selinux-policy-targeted
     state: present
