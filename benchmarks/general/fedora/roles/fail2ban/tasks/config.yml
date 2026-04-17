@@ -1,0 +1,30 @@
+---
+- name: Configure fail2ban jail.local
+  copy:
+    dest: /etc/fail2ban/jail.local
+    content: |
+      [DEFAULT]
+      bantime = 24h
+      findtime = 10m
+      maxretry = 4
+      backend = systemd
+      ignoreip = 127.0.0.1 99.246.111.59
+
+      # Use firewalld
+      banaction = firewallcmd-ipset
+
+      [sshd]
+      enabled = true
+      port = ssh
+      logpath = %(sshd_log)s
+
+      #Mailcow-related protections
+      [postfix]
+      enabled = true
+
+      [dovecot]
+      enabled = true
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart fail2ban 

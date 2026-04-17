@@ -6,3 +6,4 @@
     - base
     - selinux
     - pam
+    - fail2ban
