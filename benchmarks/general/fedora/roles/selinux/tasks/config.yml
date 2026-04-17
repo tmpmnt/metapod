@@ -3,3 +3,7 @@
   selinux:
     policy: targeted
     state: permissive
+
+- name: Reminder: SELinux in permissive mode
+  debug:
+    msg: "WARNING: SELinux is currently in permissive mode. You will need to manually set to enforcing."
