@@ -1,7 +1,9 @@
----
-- name: Set SELinux context for mailcow data
-  command: >
-    semanage fcontext -a -t container_file_t "/opt/mailcow-dockerized(/.*)?"
+# 
+# ---
+# - name: Set SELinux context for mailcow data
+#   command: >
+#     semanage fcontext -a -t container_file_t "/opt/mailcow-dockerized(/.*)?"
 
-- name: Apply SELinux context
-  command: restorecon -Rv /opt/mailcow-dockerized
+# - name: Apply SELinux context
+#   command: restorecon -Rv /opt/mailcow-dockerized
+
