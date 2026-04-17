@@ -1,6 +1,6 @@
 ---
 - name: Update installed packages
-  dnf 
+  dnf: 
     name: '*'
     state: latest
 
@@ -10,5 +10,8 @@
       - fail2ban
       - google-authenticator
       - firewalld
-      - chrony 
+      - chrony
+      - policycoreutils-python-utils
+      - python3-libselinux
+      - python3-libsemanage
     state: present
