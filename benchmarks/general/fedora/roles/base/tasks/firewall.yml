@@ -34,7 +34,7 @@
 
 #- name: Allow Submission
 #  ansible.posix.firewalld:
-#    service: submission
+#    port: 587/tcp
 #    permanent: true
 #    state: enabled
 #    immediate: true
