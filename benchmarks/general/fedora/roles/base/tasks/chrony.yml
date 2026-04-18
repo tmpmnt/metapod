@@ -18,7 +18,7 @@
       makestep 1.0 3
 
       # Enable logging
-      /var/log/chrony
+      logdir /var/log/chrony
     owner: root
     group: root
     mode: '0644'
